@@ -1,27 +1,40 @@
-# Southern Batteries Firebase project
+# Southern Batteries — original structure restored
 
-## Public site
-`index.html`
+This version keeps the original public website structure and wording from `mike index.html`.
 
-There is NO admin link in the public page. Customers cannot see an Admin button/link.
+## Restored exactly
+- Header navigation: Batteries / Location / Contact
+- Original Southern Batteries hero
+- Original payment-after-delivery notice
+- Original Location section
+- Starehe, Nairobi
+- Landmark: Opposite Spiro charging
+- Original Contact section
+- Phone: 0112323825
+- WhatsApp: 254112323825
+- Original authorized Chloride Exide dealer wording
+
+The public page contains NO Admin link.
+
+## Firebase
+`js/firebase-config.js` already contains the Firebase Web App configuration supplied for the Southern Batteries project. Imports use the gstatic CDN so GitHub Pages can load them.
 
 ## Admin
-`admin-products.html`
+Open `/admin-products.html` directly. It is not linked from the public page and has `noindex,nofollow,noarchive`.
 
-Open the admin URL directly and bookmark it. It has `noindex,nofollow,noarchive`. The real security is Firebase Authentication + Firestore/Storage rules; hiding a URL is not security by itself.
+Security is enforced by Firebase Authentication and Firestore/Storage rules.
 
-## Firebase setup
-1. Firebase Console -> Authentication -> Sign-in method -> enable Email/Password.
-2. Authentication -> Users -> create your admin email/password and copy the UID.
-3. Firestore Database -> Rules -> replace rules with `firestore.rules` and Publish.
-4. Firestore -> Data -> create collection `admins`.
-5. Create a document with Document ID exactly equal to the admin user's UID. Add `role` as string `admin`.
-6. Storage -> Rules -> replace with `storage.rules` and Publish.
-7. Open `admin-products.html`, sign in, then click Import 23 starter products.
-8. Add exact photos through the admin editor. Starter products intentionally have no guessed images.
+Create an Authentication user, copy its UID, then create:
+`admins/{UID}`
+with:
+`role` = `admin`
 
-## GitHub Pages
-Upload the complete folder without changing its structure. Firebase imports use gstatic CDN URLs, so no npm/Vite build is needed.
+Then sign in at `admin-products.html`.
 
-## IMPORTANT
-In Firebase Rules editors paste ONLY the rule text. Do not paste triple backticks and do not add an extra `{` before `rules_version = '2';`.
+## Catalogue
+The admin can import the 23 original products, then edit them and upload exact product photos. No generic image is assigned to unrelated models.
+
+## Rules
+In Firestore Rules, paste ONLY the contents of `firestore.rules`.
+In Storage Rules, paste ONLY the contents of `storage.rules`.
+Do not paste Markdown backticks or an extra `{` before `rules_version = '2';`.
