@@ -6,7 +6,7 @@ import { firebaseConfig } from "./firebase-config.js";
 
 const app = initializeApp(firebaseConfig), auth = getAuth(app), db = getFirestore(app), storage = getStorage(app);
 const $ = id => document.getElementById(id);
-const form = $("productForm"), table = $("productsTable"), editor = $("editor"), login = $("loginPanel"), admin = $("adminPanel"), message = $("message");
+const form = $("productForm"), table = $("productsTable"), login = $("loginPanel"), admin = $("adminPanel"), message = $("message");
 let editingId = null, editingImageUrl = "", currentProducts = [];
 
 const starter = [
@@ -21,7 +21,7 @@ async function save(e){e.preventDefault();const name=$('name').value.trim(),bran
 
 async function removeProduct(id){if(!confirm("Delete this product from the catalogue?"))return;try{await deleteDoc(doc(db,'products',id));notify("Product deleted.")}catch(e){notify(e.message,true)}}
 async function toggle(id, value){try{await updateDoc(doc(db,'products',id),{active:value,updatedAt:serverTimestamp()});notify(value?"Product published.":"Product hidden.")}catch(e){notify(e.message,true)}}
-async function importStarter(){if(!confirm("Add the 23 starter catalogue products? Existing products will not be deleted."))return;try{const batch=writeBatch(db);starter.forEach(([brand,name,price,category],i)=>{const r=doc(collection(db,'products'));batch.set(r,{brand,name,price,category,description:'Contact us to confirm compatibility and availability.',sortOrder:i+1,stock:true,active:true,imageUrl:'',createdAt:serverTimestamp(),updatedAt:serverTimestamp()})});await batch.commit();notify("Starter catalogue imported.")}catch(e){notify(e.message,true)}}
+async function importStarter(){if(!confirm("Create/update the 23 Southern Batteries starter products? Existing product records with the same catalogue ID will be updated."))return;try{const batch=writeBatch(db);starter.forEach(([brand,name,price,category],i)=>{const id=name.toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");const r=doc(db,"products",id);batch.set(r,{brand,name,price,category,description:"Contact us to confirm compatibility and availability.",sortOrder:i+1,stock:true,active:true,imageUrl:"",createdAt:serverTimestamp(),updatedAt:serverTimestamp()},{merge:true})});await batch.commit();notify("23 catalogue products are ready in Firebase.")}catch(e){console.error(e);notify(e.message,true)}}
 
 function render(){table.innerHTML=currentProducts.map(p=>`<tr><td><strong>${p.name}</strong><small>${p.brand}</small></td><td>KSh ${Number(p.price||0).toLocaleString('en-KE')}</td><td>${p.stock===false?'Out':'Available'}</td><td><button data-edit="${p.id}">Edit</button><button data-toggle="${p.id}" data-value="${p.active!==false}">${p.active!==false?'Hide':'Publish'}</button><button class="danger" data-delete="${p.id}">Delete</button></td></tr>`).join('')||'<tr><td colspan="4">No products yet.</td></tr>';table.querySelectorAll('[data-edit]').forEach(b=>b.onclick=()=>fill(currentProducts.find(p=>p.id===b.dataset.edit)));table.querySelectorAll('[data-delete]').forEach(b=>b.onclick=()=>removeProduct(b.dataset.delete));table.querySelectorAll('[data-toggle]').forEach(b=>b.onclick=()=>toggle(b.dataset.toggle,b.dataset.value!=='true'))}
 
