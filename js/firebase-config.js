@@ -1,4 +1,4 @@
-// Southern Batteries Firebase configuration
+// Southern Batteries Firebase Web App configuration.
 export const firebaseConfig = {
   apiKey: "AIzaSyBXbxz4MW7yHu1sOEcURRDq36KVg3fbSfA",
   authDomain: "southern-batteries.firebaseapp.com",
