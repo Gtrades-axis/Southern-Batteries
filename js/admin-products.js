@@ -21,29 +21,29 @@ let currentProducts = [];
 
 // The original Southern Batteries catalogue supplied with the project.
 const starter = [
-  ["Powerlast","035 Powerlast",6800,"powerlast","https://venjohmotorbatteries.com/wp-content/uploads/2024/09/IMG_6596-scaled.webp"],
-  ["Powerlast","045 Powerlast",8000,"powerlast","https://static.wixstatic.com/media/4ee99f_e359ac7f0a6c445386bf424b50ee3fee~mv2.png/v1/fit/w_500%2Ch_500%2Cq_90/file.png"],
-  ["Powerlast","NS 70 Powerlast",9500,"powerlast","https://static.wixstatic.com/media/687cd1_9447c949f87e467890efc5169baaccf4~mv2.png/v1/fit/w_912%2Ch_912%2Cq_90/687cd1_9447c949f87e467890efc5169baaccf4~mv2.png"],
-  ["Powerlast","N70 Powerlast",12000,"powerlast","https://ke.jumia.is/unsafe/fit-in/700x700/filters:fill(white)/product/08/301796/1.jpg?6376="],
-  ["Powerlast","N 90 Powerlast",15000,"powerlast","https://jemspark.co.ke/wp-content/uploads/2025/09/Chloride-Exide-N90-MF.png"],
-  ["Sebang AGM","DIN 80 MF Sebang AGM",23000,"agm","https://acquybinhduong.com/uploads/images/6461d494d2e97821596bddd3/ac-quy-sebang-agm-80-l4-12v-80ah-2.png"],
-  ["Sebang AGM","DIN 70 MF AGM",21000,"agm","https://acquybinhduong.com/uploads/images/6461d851d2e97821596bdde7/ac-quy-sebang-agm-70-l3-12v-70ah-2.png"],
-  ["Sebang AGM","DIN 60 MF Sebang AGM",18500,"agm","https://amagspb.ru/files/products/00-02351825.1024x768.jpg"],
-  ["Exide AGM","DIN 070 MF L Exide AGM",23500,"agm","https://static.wixstatic.com/media/687cd1_8bb91f2c7089478ea6e2634b6f2d937b~mv2.png/v1/fill/w_980%2Ch_980%2Cal_c%2Cq_90%2Cusm_0.66_1.00_0.01%2Cenc_avif%2Cquality_auto/687cd1_8bb91f2c7089478ea6e2634b6f2d937b~mv2.png"],
-  ["Chloride Exide","NS70 SBL Chloride Exide",8000,"chloride","https://static.wixstatic.com/media/0283bf_c309f4586eb44a6a91fdd1403d85ae06~mv2.png/v1/fit/w_912%2Ch_912%2Cq_90/0283bf_c309f4586eb44a6a91fdd1403d85ae06~mv2.png"],
-  ["Chloride Exide","NS 70 SBR Chloride Exide",8000,"chloride","https://static.wixstatic.com/media/0283bf_c309f4586eb44a6a91fdd1403d85ae06~mv2.png/v1/fit/w_912%2Ch_912%2Cq_90/0283bf_c309f4586eb44a6a91fdd1403d85ae06~mv2.png"],
-  ["Solar Spark","050 Salar Spark",8000,"solar","https://static.wixstatic.com/media/0283bf_db07b9983a12471582689bf9745771eb~mv2.png/v1/fit/w_912%2Ch_912%2Cq_90/0283bf_db07b9983a12471582689bf9745771eb~mv2.png"],
-  ["Solar Powerlast","050 MFL Solar Powerlast",8200,"solar","https://www.carbatt254.co.ke/wp-content/uploads/2024/07/PHOTO-2022-12-19-17-10-55.jpg"],
-  ["Powerlast","DIN 55 MF Powerlast",11500,"powerlast","https://www.onestopautogarage.co.ke/wp-content/uploads/2025/05/CHLORIDE-EXIDE-POWERLAST-DIN55.jpg"],
-  ["Powerlast","DIN 60 MF Powerlast",12500,"powerlast",""],
-  ["Chloride Exide","N70 MFR Chloride Exide",12500,"chloride","https://macire.co.ke/wp-content/uploads/2022/07/Chloride-Exide-Powerlast-N70MFR-Maintenance-Free-Car-Battery-600x600.png"],
-  ["Powerlast","DIN 80 Powerlast",15000,"powerlast","https://static.wixstatic.com/media/0283bf_23d88d85002c45859325e470d7513b24~mv2.png/v1/fit/w_912%2Ch_912%2Cq_90/0283bf_23d88d85002c45859325e470d7513b24~mv2.png"],
-  ["Powerlast","DIN 88 MF Powerlast",16000,"powerlast","https://d8jbk05ikns31.cloudfront.net/chloride_bat-removebg-preview-1761889503788.png"],
-  ["Powerlast","DIN 100 MF Powerlast",20000,"powerlast",""],
-  ["Powerlast","100 MF Powerlast",14500,"powerlast",""],
-  ["Powerlast","N 150 MFR Powerlast",25000,"powerlast","https://static.wixstatic.com/media/0283bf_031bd66deac141e4939e9c897a889900~mv2.png/v1/fit/w_912%2Ch_912%2Cq_90/0283bf_031bd66deac141e4939e9c897a889900~mv2.png"],
-  ["Powerlast","N 220 MFL Powerlast",30000,"powerlast",""],
-  ["Solar Spark","O26 Solar Spark",5200,"solar",""]
+  ["Powerlast","035 Powerlast",6800,"powerlast"],
+  ["Powerlast","045 Powerlast",8000,"powerlast"],
+  ["Powerlast","NS 70 Powerlast",9500,"powerlast"],
+  ["Powerlast","N70 Powerlast",12000,"powerlast"],
+  ["Powerlast","N 90 Powerlast",15000,"powerlast"],
+  ["Sebang AGM","DIN 80 MF Sebang AGM",23000,"agm"],
+  ["AGM","DIN 70 MF AGM",21000,"agm"],
+  ["Sebang AGM","DIN 60 MF Sebang AGM",18500,"agm"],
+  ["Exide AGM","DIN 070 MF L Exide AGM",23500,"agm"],
+  ["Chloride Exide","NS70 SBL Chloride Exide",8000,"chloride"],
+  ["Chloride Exide","NS 70 SBR Chloride Exide",8000,"chloride"],
+  ["Solar Spark","050 Salar Spark",8000,"solar"],
+  ["Solar Powerlast","050 MFL Solar Powerlast",8200,"solar"],
+  ["Powerlast","DIN 55 MF Powerlast",11500,"powerlast"],
+  ["Powerlast","DIN 60 MF Powerlast",12500,"powerlast"],
+  ["Chloride Exide","N70 MFR Chloride Exide",12500,"chloride"],
+  ["Powerlast","DIN 80 Powerlast",15000,"powerlast"],
+  ["Powerlast","DIN 88 MF Powerlast",16000,"powerlast"],
+  ["Powerlast","DIN 100 MF Powerlast",20000,"powerlast"],
+  ["Powerlast","100 MF Powerlast",14500,"powerlast"],
+  ["Powerlast","N 150 MFR Powerlast",25000,"powerlast"],
+  ["Powerlast","N 220 MFL Powerlast",30000,"powerlast"],
+  ["Solar Spark","O26 Solar Spark",5200,"solar"]
 ];
 
 function notify(text, bad = false) {
@@ -167,7 +167,7 @@ async function seedOriginalCatalogue({force = false} = {}) {
   if (!force && !existing.empty) return false;
 
   const batch = writeBatch(db);
-  starter.forEach(([brand, name, price, category, imageUrl], i) => {
+  starter.forEach(([brand, name, price, category], i) => {
     const id = slug(name);
     batch.set(doc(db, "products", id), {
       brand,
@@ -178,7 +178,7 @@ async function seedOriginalCatalogue({force = false} = {}) {
       sortOrder: i + 1,
       stock: true,
       active: true,
-      imageUrl: imageUrl || "",
+      imageUrl: "",
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp()
     }, { merge: true });
