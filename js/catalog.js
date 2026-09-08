@@ -1,7 +1,52 @@
-import {app} from "./firebase-config.js";import{getFirestore,collection,query,where,orderBy,onSnapshot}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-const db=getFirestore(app),productsEl=document.querySelector("#products"),status=document.querySelector("#status"),filters=document.querySelector("#filters"),search=document.querySelector("#search");document.querySelector("#year").textContent=new Date().getFullYear();
-let items=[],cat="all";const cats=[["all","All"],["powerlast","Powerlast"],["chloride","Chloride Exide"],["agm","AGM"],["solar","Solar"]];
-const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));
-function renderFilters(){filters.innerHTML=cats.map(x=>`<button class="${cat===x[0]?"active":""}" data-cat="${x[0]}">${x[1]}</button>`).join("");filters.querySelectorAll("button").forEach(b=>b.onclick=()=>{cat=b.dataset.cat;renderFilters();render()})}
-function render(){let term=search.value.toLowerCase().trim(),a=items.filter(p=>(cat==="all"||p.category===cat)&&(!term||`${p.name} ${p.brand} ${p.description}`.toLowerCase().includes(term)));status.textContent=a.length?`${a.length} product${a.length>1?"s":""} available`:"No products match your search.";productsEl.innerHTML=a.map(p=>{let img=p.imageUrl?`<img src="${esc(p.imageUrl)}" alt="${esc(p.name)}" loading="lazy">`:`<div class="placeholder"><b>Product photo</b><small>Ask us for the exact model</small></div>`;let wa=`https://wa.me/254743400700?text=${encodeURIComponent("Hello Southern Batteries, I would like to enquire about "+p.name+" - KSh "+Number(p.price||0).toLocaleString("en-KE"))}`;return`<article class="card"><div class="photo">${img}</div><div class="body"><small>${esc(p.brand||"Southern Batteries")} • ${p.inStock?"In stock":"Check availability"}</small><h3>${esc(p.name)}</h3><p>${esc(p.description||"Quality battery. Contact us for availability and fitment.")}</p><div class="bottom"><b>KSh ${Number(p.price||0).toLocaleString("en-KE")}</b><a class="btn" href="${wa}" target="_blank" rel="noopener">Enquire</a></div></div></article>`}).join("")}
-search.oninput=render;renderFilters();onSnapshot(query(collection(db,"products"),where("active","==",true),orderBy("sortOrder","asc")),s=>{items=s.docs.map(d=>({id:d.id,...d.data()}));render()},e=>{console.error(e);status.textContent="Catalogue temporarily unavailable. Please contact us on WhatsApp."});
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+import { getFirestore, collection, query, where, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+import { firebaseConfig } from "./firebase-config.js";
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const catalog = document.getElementById("catalog");
+const status = document.getElementById("catalogStatus");
+let products = [];
+let activeFilter = "all";
+
+const money = value => `KSh ${Number(value || 0).toLocaleString("en-KE")}`;
+const wa = name => `https://wa.me/254112323825?text=${encodeURIComponent(`Hello Southern Batteries, I am interested in ${name}. Please confirm availability and delivery.`)}`;
+const escapeHtml = value => String(value ?? "").replace(/[&<>'"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#39;",'"':"&quot;"}[c]));
+
+function productCard(p) {
+  const name = escapeHtml(p.name);
+  const brand = escapeHtml(p.brand || "Southern Batteries");
+  const desc = escapeHtml(p.description || "Contact us to confirm compatibility and availability.");
+  const cat = escapeHtml(p.category || "other");
+  const image = p.imageUrl
+    ? `<img src="${escapeHtml(p.imageUrl)}" alt="${name}" loading="lazy" onerror="this.closest('.photo').classList.add('no-image');this.remove();">`
+    : `<div class="model-art"><strong>${name}</strong><small>Product photo coming soon</small></div>`;
+  const stock = p.stock === false ? `<span class="stock out">Out of stock</span>` : `<span class="stock">Available</span>`;
+  return `<article class="card" data-category="${cat}">
+    <div class="photo">${image}${stock}</div>
+    <div class="body"><div class="brand">${brand}</div><h3>${name}</h3><p class="desc">${desc}</p><div class="price">${money(p.price)}</div><a class="order" target="_blank" rel="noopener" href="${wa(p.name)}">Order / Enquire</a></div>
+  </article>`;
+}
+
+function render() {
+  const filtered = products.filter(p => activeFilter === "all" || p.category === activeFilter);
+  catalog.innerHTML = filtered.length ? filtered.map(productCard).join("") : `<div class="empty">No batteries are listed in this category yet.</div>`;
+  status.textContent = `${filtered.length} product${filtered.length === 1 ? "" : "s"}`;
+}
+
+document.querySelectorAll(".filter").forEach(btn => btn.addEventListener("click", () => {
+  document.querySelectorAll(".filter").forEach(b => b.classList.remove("active"));
+  btn.classList.add("active");
+  activeFilter = btn.dataset.filter;
+  render();
+}));
+
+const q = query(collection(db, "products"), where("active", "==", true), orderBy("sortOrder", "asc"));
+onSnapshot(q, snap => {
+  products = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+  render();
+}, err => {
+  console.error(err);
+  status.textContent = "Catalogue temporarily unavailable";
+  catalog.innerHTML = `<div class="empty error">We are updating the catalogue. Please contact Southern Batteries on WhatsApp or phone.</div>`;
+});
