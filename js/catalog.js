@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
-import { getFirestore, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+import { getFirestore, collection, query, where, onSnapshot } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 import { firebaseConfig } from "./firebase-config.js";
 
 const app = initializeApp(firebaseConfig);
@@ -43,8 +43,16 @@ document.querySelectorAll(".filter").forEach(btn => btn.addEventListener("click"
   render();
 }));
 
-onSnapshot(collection(db, "products"), snap => {
-  products = snap.docs.map(d => ({ id: d.id, ...d.data() })).filter(p => p.active === true);
+// IMPORTANT: Public users must query only published products.
+// This matches the Firestore security rule and prevents "Missing or insufficient permissions"
+// when a logged-out visitor opens the catalogue.
+const publicProductsQuery = query(
+  collection(db, "products"),
+  where("active", "==", true)
+);
+
+onSnapshot(publicProductsQuery, snap => {
+  products = snap.docs.map(d => ({ id: d.id, ...d.data() }));
   render();
 }, err => {
   console.error(err);

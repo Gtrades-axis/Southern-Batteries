@@ -1,15 +1,31 @@
 rules_version = '2';
+
 service cloud.firestore {
   match /databases/{database}/documents {
+
+    // An admin is identified by a document whose ID is the
+    // same as the signed-in Firebase Authentication UID.
     function isAdmin() {
-      return request.auth != null && exists(/databases/$(database)/documents/admins/$(request.auth.uid));
+      return request.auth != null
+        && exists(/databases/$(database)/documents/admins/$(request.auth.uid));
     }
 
+    // ------------------------------------------------------------
+    // PUBLIC CATALOGUE
+    // ------------------------------------------------------------
+    // Logged-out customers can read ONLY products that are published.
+    // The public catalog.js query uses where("active", "==", true),
+    // so the query is compatible with this rule.
     match /products/{productId} {
-      allow read: if resource.data.active == true || isAdmin();
+      allow read: if isAdmin() || resource.data.active == true;
       allow create, update, delete: if isAdmin();
     }
 
+    // ------------------------------------------------------------
+    // ADMIN AUTHORIZATION RECORDS
+    // ------------------------------------------------------------
+    // A user may read only their own admin record.
+    // Nobody can create/change admin records from the website.
     match /admins/{uid} {
       allow read: if request.auth != null && request.auth.uid == uid;
       allow write: if false;

@@ -1,10 +1,15 @@
 rules_version = '2';
+
 service firebase.storage {
   match /b/{bucket}/o {
+
     function isAdmin() {
-      return request.auth != null && firestore.exists(/databases/(default)/documents/admins/$(request.auth.uid));
+      return request.auth != null
+        && firestore.exists(/databases/(default)/documents/admins/$(request.auth.uid));
     }
 
+    // Product images are public because the customer catalogue is public.
+    // Only an authorized admin can upload, replace or delete them.
     match /products/{productId}/{fileName} {
       allow read: if true;
       allow write, delete: if isAdmin();
