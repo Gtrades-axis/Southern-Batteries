@@ -57,6 +57,59 @@ function slug(name) {
   return name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 }
 
+// Verified product images found online. Existing saved images are never overwritten.
+const verifiedImages = {
+  "075-solar-chloride-exide": "https://static.wixstatic.com/media/0283bf_78c2cf28702c410a81f3f65358607678~mv2.png/v1/fit/w_912%2Ch_912%2Cq_90/0283bf_78c2cf28702c410a81f3f65358607678~mv2.png",
+  "100-solar-chloride-exide": "https://static.wixstatic.com/media/0283bf_78c2cf28702c410a81f3f65358607678~mv2.png/v1/fit/w_912%2Ch_912%2Cq_90/0283bf_78c2cf28702c410a81f3f65358607678~mv2.png",
+  "100-mf-solar-spark": "https://static.wixstatic.com/media/0283bf_04e4df3633264f029206983e254ae872~mv2.png/v1/fit/w_912%2Ch_912%2Cq_90/0283bf_04e4df3633264f029206983e254ae872~mv2.png",
+  "075-mf-solar-spark": "https://static.wixstatic.com/media/0283bf_db07b9983a12471582689bf9745771eb~mv2.png/v1/fit/w_912%2Ch_912%2Cq_90/0283bf_db07b9983a12471582689bf9745771eb~mv2.png",
+  "050-mf-solar-spark": "https://static.wixstatic.com/media/0283bf_db07b9983a12471582689bf9745771eb~mv2.png/v1/fit/w_912%2Ch_912%2Cq_90/0283bf_db07b9983a12471582689bf9745771eb~mv2.png",
+  "100-ah-12v-ritar-power": "https://www.tdk.co.ke/wp-content/uploads/2022/07/ritar-dc12-100c-12v-100ah-agm-vrla-battery_480x480-100x100.jpg",
+  "solar-200ah-12v-eastman": "https://static.wixstatic.com/media/0283bf_9a54a41fcf5e45ad905f6a18807a1a4a~mv2.png/v1/fit/w_912%2Ch_912%2Cq_90/0283bf_9a54a41fcf5e45ad905f6a18807a1a4a~mv2.png",
+  "100-watts-solar-panel-mono": "https://static.wixstatic.com/media/0283bf_069c063f36c34507aae0c462ae272bb0~mv2.jpg/v1/fit/w_912%2Ch_912%2Cq_90/0283bf_069c063f36c34507aae0c462ae272bb0~mv2.jpg",
+  "200-watts-solar-panel-mono": "https://static.wixstatic.com/media/0283bf_069c063f36c34507aae0c462ae272bb0~mv2.jpg/v1/fit/w_912%2Ch_912%2Cq_90/0283bf_069c063f36c34507aae0c462ae272bb0~mv2.jpg",
+  "300-watts-solar-panel-mono": "https://static.wixstatic.com/media/0283bf_069c063f36c34507aae0c462ae272bb0~mv2.jpg/v1/fit/w_912%2Ch_912%2Cq_90/0283bf_069c063f36c34507aae0c462ae272bb0~mv2.jpg",
+  "620-watts-solar-panel-mono": "https://static.wixstatic.com/media/0283bf_069c063f36c34507aae0c462ae272bb0~mv2.jpg/v1/fit/w_912%2Ch_912%2Cq_90/0283bf_069c063f36c34507aae0c462ae272bb0~mv2.jpg",
+  "n50-mfl-chloride-exide": "https://static.wixstatic.com/media/0283bf_e4e24ab7d747416f92db7a84dd21c307~mv2.png/v1/fit/w_912%2Ch_912%2Cq_90/0283bf_e4e24ab7d747416f92db7a84dd21c307~mv2.png",
+  "n70-mfl-spark": "https://static.wixstatic.com/media/0283bf_04e4df3633264f029206983e254ae872~mv2.png/v1/fit/w_912%2Ch_912%2Cq_90/0283bf_04e4df3633264f029206983e254ae872~mv2.png",
+  "ns70-mfl-spark": "https://static.wixstatic.com/media/0283bf_04e4df3633264f029206983e254ae872~mv2.png/v1/fit/w_912%2Ch_912%2Cq_90/0283bf_04e4df3633264f029206983e254ae872~mv2.png",
+  "n70-mfl-supreme": "https://static.wixstatic.com/media/0283bf_0d052a1c75e3410e85e6ec333272750f~mv2.png/v1/fit/w_912%2Ch_912%2Cq_90/0283bf_0d052a1c75e3410e85e6ec333272750f~mv2.png",
+  "045l-mf-exide-matrix": "https://static.wixstatic.com/media/0283bf_0d052a1c75e3410e85e6ec333272750f~mv2.png/v1/fit/w_912%2Ch_912%2Cq_90/0283bf_0d052a1c75e3410e85e6ec333272750f~mv2.png",
+  "n70mfr-exide-matrix": "https://static.wixstatic.com/media/0283bf_0d052a1c75e3410e85e6ec333272750f~mv2.png/v1/fit/w_912%2Ch_912%2Cq_90/0283bf_0d052a1c75e3410e85e6ec333272750f~mv2.png",
+  "045l-mf-voltron": "https://static.wixstatic.com/media/4ee99f_bfe22d15519e43cdb9a2fd605cc39601~mv2.png/v1/fill/w_980%2Ch_762%2Cal_c%2Cq_90%2Cusm_0.66_1.00_0.01%2Cenc_avif%2Cquality_auto/4ee99f_bfe22d15519e43cdb9a2fd605cc39601~mv2.png",
+  "ns70l-voltron": "https://static.wixstatic.com/media/4ee99f_bfe22d15519e43cdb9a2fd605cc39601~mv2.png/v1/fill/w_980%2Ch_762%2Cal_c%2Cq_90%2Cusm_0.66_1.00_0.01%2Cenc_avif%2Cquality_auto/4ee99f_bfe22d15519e43cdb9a2fd605cc39601~mv2.png",
+  "n70l-voltron": "https://static.wixstatic.com/media/4ee99f_bfe22d15519e43cdb9a2fd605cc39601~mv2.png/v1/fill/w_980%2Ch_762%2Cal_c%2Cq_90%2Cusm_0.66_1.00_0.01%2Cenc_avif%2Cquality_auto/4ee99f_bfe22d15519e43cdb9a2fd605cc39601~mv2.png"
+};
+
+const additions = [
+  ["Chloride Exide", "075 Solar Chloride Exide", 10000, "solar", "075-solar-chloride-exide"],
+  ["Chloride Exide", "100 Solar Chloride Exide", 14000, "solar", "100-solar-chloride-exide"],
+  ["Solar Spark", "100 MF Solar Spark", 12000, "solar", "100-mf-solar-spark"],
+  ["Solar Spark", "075 MF Solar Spark", 10000, "solar", "075-mf-solar-spark"],
+  ["Solar Spark", "050 MF Solar Spark", 8000, "solar", "050-mf-solar-spark"],
+  ["Ritar Power", "Ritar Power 100Ah 12V", 21400, "solar", "100-ah-12v-ritar-power"],
+  ["Eastman", "Solar 200Ah 12V Eastman", 34000, "solar", "solar-200ah-12v-eastman"],
+  ["Solar Panel", "Solar 100 Watts (Mono)", 400, "solar", "100-watts-solar-panel-mono"],
+  ["Solar Panel", "Solar 200 Watts (Mono)", 7000, "solar", "200-watts-solar-panel-mono"],
+  ["Solar Panel", "Solar 300 Watts (Mono)", 10000, "solar", "300-watts-solar-panel-mono"],
+  ["Jinko", "Solar 620 Watts (Mono)", 12500, "solar", "620-watts-solar-panel-mono"],
+  ["Chloride Exide", "N50 MFL Chloride Exide", 9500, "chloride", "n50-mfl-chloride-exide"],
+  ["Solar Spark", "N70 MFL Spark", 10000, "powerlast", "n70-mfl-spark"],
+  ["Solar Spark", "NS70 MFL Spark", 8000, "powerlast", "ns70-mfl-spark"],
+  ["Supreme", "N70 MFL Supreme", 12000, "powerlast", "n70-mfl-supreme"],
+  ["Exide Matrix", "045 L MF Exide Matrix", 12000, "powerlast", "045l-mf-exide-matrix"],
+  ["Exide Matrix", "N70 MFR Exide Matrix", 15000, "powerlast", "n70mfr-exide-matrix"],
+  ["Voltron", "045 L MF Voltron", 7000, "powerlast", "045l-mf-voltron"],
+  ["Voltron", "NS70 L Voltron", 9000, "powerlast", "ns70l-voltron"],
+  ["Voltron", "N70 L Voltron", 10000, "powerlast", "n70l-voltron"]
+];
+
+const starterWithImages = starter.map(([brand, name, price, category]) => {
+  const key = slug(name);
+  return [brand, name, price, category, verifiedImages[key] || ""];
+});
+
+
 function reset() {
   form.reset();
   editingId = null;
@@ -167,7 +220,7 @@ async function seedOriginalCatalogue({force = false} = {}) {
   if (!force && !existing.empty) return false;
 
   const batch = writeBatch(db);
-  starter.forEach(([brand, name, price, category], i) => {
+  starterWithImages.forEach(([brand, name, price, category, imageUrl], i) => {
     const id = slug(name);
     batch.set(doc(db, "products", id), {
       brand,
@@ -178,7 +231,7 @@ async function seedOriginalCatalogue({force = false} = {}) {
       sortOrder: i + 1,
       stock: true,
       active: true,
-      imageUrl: "",
+      imageUrl: imageUrl || "",
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp()
     }, { merge: true });
@@ -187,11 +240,46 @@ async function seedOriginalCatalogue({force = false} = {}) {
   return true;
 }
 
+async function seedAdditions() {
+  const existing = await getDocs(collection(db, "products"));
+  const existingMap = new Map(existing.docs.map(d => [d.id, { id: d.id, ...d.data() }]));
+  const batch = writeBatch(db);
+  let changed = 0;
+
+  additions.forEach(([brand, name, price, category, key], i) => {
+    const id = slug(name);
+    const imageUrl = verifiedImages[key] || "";
+    const current = existingMap.get(id);
+
+    if (current) {
+      // Preserve existing price/name/stock settings. Only repair a missing image.
+      if (!current.imageUrl && imageUrl) {
+        batch.update(doc(db, "products", id), { imageUrl, updatedAt: serverTimestamp() });
+        changed++;
+      }
+      return;
+    }
+
+    batch.set(doc(db, "products", id), {
+      brand, name, price, category,
+      description: "Contact us to confirm compatibility and availability.",
+      sortOrder: 30 + i, stock: true, active: true,
+      imageUrl,
+      createdAt: serverTimestamp(), updatedAt: serverTimestamp()
+    });
+    changed++;
+  });
+
+  if (changed) await batch.commit();
+  return changed;
+}
+
 async function importStarter() {
-  if (!confirm("Restore the original 23 Southern Batteries catalogue products? Existing records with these exact product IDs will be updated.")) return;
+  if (!confirm("Restore the original 23 Southern Batteries catalogue products and add the new supplier list? Existing original records will be updated; existing supplier products keep their current details and only missing images are repaired.")) return;
   try {
     await seedOriginalCatalogue({ force: true });
-    notify("The original 23-product catalogue is ready. You can now edit or add products.");
+    await seedAdditions();
+    notify("The catalogue has been restored and the new supplier products added.");
   } catch (err) {
     console.error(err);
     notify(err.message || "Could not restore catalogue.", true);
@@ -238,7 +326,9 @@ async function startAdmin(user) {
     // The original 23-product catalogue is created automatically only when the
     // products collection is empty. Existing edits are never overwritten on login.
     const seeded = await seedOriginalCatalogue();
+    const added = await seedAdditions();
     if (seeded) notify("Original 23-product catalogue loaded. You can now edit or add products.");
+    else if (added) notify(`${added} new catalogue products added.`);
 
     onSnapshot(collection(db, "products"), snap => {
       currentProducts = snap.docs.map(d => ({ id: d.id, ...d.data() }));

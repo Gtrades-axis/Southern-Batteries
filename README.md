@@ -32,7 +32,8 @@ product manager. Both use the same Firebase `products` collection.
    `{ "role": "admin" }`
 7. Open `/admin-products.html` directly to sign in.
 8. Customers use `/index.html`; there is no public admin link.
-9. Use **Restore original 23 products** once if the products collection is empty.
+9. New supplier products are added automatically on admin login if they do not already exist.
+10. Use **Restore original 23 products** if the products collection is empty or you intentionally want to restore the original records.
 
 ## Important security behavior
 
@@ -46,7 +47,7 @@ published products, but cannot add, edit, delete or publish anything.
 
 ## Product images
 
-Upload product-specific images from the admin panel. The image URL is stored
+The catalogue now includes verified online product images for the newly added items where a matching manufacturer/dealer image was found. Existing saved images are never overwritten. You can still upload a local product photo from the admin panel at any time; uploaded photos replace the remote image for that product. The image URL is stored
 with that product in Firestore, and the public card uses that URL. Products
 without an image show the existing product-specific placeholder instead of a
 generic image.
