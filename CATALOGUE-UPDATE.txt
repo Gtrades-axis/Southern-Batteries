@@ -1,0 +1,14 @@
+SOUTHERN BATTERIES CATALOGUE UPDATE
+
+Updated from the supplied Southern-Batteries-main (4).zip project.
+
+Changes:
+1. DIN 55 MF Powerlast price updated from KSh 11,500 to KSh 10,500.
+2. DIN 80 Powerlast remains KSh 15,000 (already present) and now receives a product image.
+3. Added DIN 66 Powerlast — KSh 12,800 — with product image.
+4. Added DIN 66 MF L Exide Matrix — KSh 17,500 — with Exide Matrix product image.
+
+The existing Firebase + Cloudflare R2 workflow was preserved.
+The product images are stored as imageUrl values, so the public catalogue can display them.
+
+Image references were sourced from publicly available product listings/manufacturer pages found during the update. The DIN 66 MF L Exide Matrix image is an Exide Matrix image representing the Matrix product line; replace it with the exact local product photo if you have one.

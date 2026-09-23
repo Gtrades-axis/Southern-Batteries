@@ -89,7 +89,7 @@ const starter = [
   ["Solar Spark", "050 Salar Spark", 8000, "solar"],
   ["Solar Powerlast", "050 MFL Solar Powerlast", 8200, "solar"],
 
-  ["Powerlast", "DIN 55 MF Powerlast", 11500, "powerlast"],
+  ["Powerlast", "DIN 55 MF Powerlast", 10500, "powerlast"],
   ["Powerlast", "DIN 60 MF Powerlast", 12500, "powerlast"],
 
   ["Chloride Exide", "N70 MFR Chloride Exide", 12500, "chloride"],
@@ -110,6 +110,18 @@ const starter = [
 // =============================================================
 
 const verifiedImages = {
+
+  "din-55-mf-powerlast":
+    "https://static.wixstatic.com/media/0283bf_23d88d85002c45859325e470d7513b24~mv2.png/v1/fit/w_912%2Ch_912%2Cq_90/0283bf_23d88d85002c45859325e470d7513b24~mv2.png",
+
+  "din-80-powerlast":
+    "https://static.wixstatic.com/media/0283bf_23d88d85002c45859325e470d7513b24~mv2.png/v1/fit/w_912%2Ch_912%2Cq_90/0283bf_23d88d85002c45859325e470d7513b24~mv2.png",
+
+  "din-66-powerlast":
+    "https://cdn.civrot.app/product-images/cmejplxdl0016x7fio75wr16i/logo10_27_204047-1761587374166-3594c404d4b3.webp",
+
+  "din-66mf-l-exide-matrix":
+    "https://skandhabatteries.com/storage/2023/09/EXIDE-MATRIX.png",
 
   "075-solar-chloride-exide":
     "https://static.wixstatic.com/media/0283bf_78c2cf28702c410a81f3f65358607678~mv2.png/v1/fit/w_912%2Ch_912%2Cq_90/0283bf_78c2cf28702c410a81f3f65358607678~mv2.png",
@@ -217,7 +229,11 @@ const additions = [
 
   ["Voltron", "NS70 L Voltron", 9000, "powerlast", "ns70l-voltron"],
 
-  ["Voltron", "N70 L Voltron", 10000, "powerlast", "n70l-voltron"]
+  ["Voltron", "N70 L Voltron", 10000, "powerlast", "n70l-voltron"],
+
+  ["Powerlast", "DIN 66 Powerlast", 12800, "powerlast", "din-66-powerlast"],
+
+  ["Exide Matrix", "DIN 66 MF L Exide Matrix", 17500, "powerlast", "din-66mf-l-exide-matrix"]
 ];
 
 
